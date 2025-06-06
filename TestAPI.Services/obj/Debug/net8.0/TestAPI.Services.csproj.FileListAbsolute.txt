@@ -1,0 +1,17 @@
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\bin\Debug\net8.0\TestAPI.Services.deps.json
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\bin\Debug\net8.0\TestAPI.Services.runtimeconfig.json
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\bin\Debug\net8.0\TestAPI.Services.dll
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\bin\Debug\net8.0\TestAPI.Services.pdb
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\bin\Debug\net8.0\TestAPI.Domain.dll
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\bin\Debug\net8.0\TestAPI.Domain.pdb
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.csproj.AssemblyReference.cache
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.AssemblyInfoInputs.cache
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.AssemblyInfo.cs
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.csproj.CoreCompileInputs.cache
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI..EE96CC47.Up2Date
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.dll
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\refint\TestAPI.Services.dll
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.pdb
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.genruntimeconfig.cache
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\ref\TestAPI.Services.dll

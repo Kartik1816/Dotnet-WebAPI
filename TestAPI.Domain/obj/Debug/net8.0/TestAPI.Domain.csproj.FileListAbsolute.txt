@@ -1,0 +1,14 @@
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\bin\Debug\net8.0\TestAPI.Domain.deps.json
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\bin\Debug\net8.0\TestAPI.Domain.dll
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\bin\Debug\net8.0\TestAPI.Domain.pdb
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.AssemblyInfoInputs.cache
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.AssemblyInfo.cs
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.csproj.CoreCompileInputs.cache
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.dll
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\refint\TestAPI.Domain.dll
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.pdb
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\ref\TestAPI.Domain.dll
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.csproj.AssemblyReference.cache
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\bin\Debug\net8.0\TestAPI.Domain.runtimeconfig.json
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.genruntimeconfig.cache
