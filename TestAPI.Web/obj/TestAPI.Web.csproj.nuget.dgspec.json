@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.web\\TestAPI.Web.csproj": {}
+    "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.Web\\TestAPI.Web.csproj": {}
   },
   "projects": {
     "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.Domain\\TestAPI.Domain.csproj": {
@@ -176,14 +176,14 @@
         }
       }
     },
-    "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.web\\TestAPI.Web.csproj": {
+    "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.Web\\TestAPI.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.web\\TestAPI.Web.csproj",
+        "projectUniqueName": "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.Web\\TestAPI.Web.csproj",
         "projectName": "TestAPI.Web",
-        "projectPath": "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.web\\TestAPI.Web.csproj",
+        "projectPath": "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.Web\\TestAPI.Web.csproj",
         "packagesPath": "C:\\Users\\pca158\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.web\\obj\\",
+        "outputPath": "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.Web\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pca158\\AppData\\Roaming\\NuGet\\NuGet.Config"

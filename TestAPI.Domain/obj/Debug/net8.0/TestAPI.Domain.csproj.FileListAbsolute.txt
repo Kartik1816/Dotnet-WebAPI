@@ -12,3 +12,4 @@ C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\ref\
 C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.csproj.AssemblyReference.cache
 C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\bin\Debug\net8.0\TestAPI.Domain.runtimeconfig.json
 C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.genruntimeconfig.cache
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Domain\obj\Debug\net8.0\TestAPI.Domain.sourcelink.json

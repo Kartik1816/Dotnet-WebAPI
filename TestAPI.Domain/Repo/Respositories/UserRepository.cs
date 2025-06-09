@@ -1,4 +1,5 @@
 using System.Data;
+using System.Reflection;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,41 +37,13 @@ public class UserRepository : IUserRepository
             //         await _testDbContext.SaveChangesAsync();
             //         return new JsonResult(new { success = true, message = "User Added successfully!" });
             //     }
-            
-                using (NpgsqlConnection? connection = _testDbContext.Database.GetDbConnection() as NpgsqlConnection)
-                {
-                    await connection.OpenAsync();
 
-                    using (NpgsqlCommand command = new NpgsqlCommand("CALL sp_save_user(@p_id, @p_name, @p_code, @p_email, @p_phone, @p_address, @p_nickname, @p_success, @p_message)", connection))
-                    {
-                        command.CommandType = CommandType.Text;
+            Dictionary<string, object?> inputParameters = GenerateStoredProcedureParametersFromObject(user);
 
-                        // Input parameters
-                        command.Parameters.AddWithValue("p_id", user.Id);
-                        command.Parameters.AddWithValue("p_name", user.Name);
-                        command.Parameters.AddWithValue("p_code", user.Code ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("p_email", user.Email);
-                        command.Parameters.AddWithValue("p_phone", user.Phone);
-                        command.Parameters.AddWithValue("p_address", user.Address ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("p_nickname", user.NickName ?? (object)DBNull.Value);
+            NpgsqlParameter[]? outputParameters = GetSuccessMessageParameters();
 
-                        // Output parameters
-                        NpgsqlParameter successParam = new NpgsqlParameter("p_success", NpgsqlDbType.Boolean) { Direction = ParameterDirection.InputOutput, Value = true };
-                        NpgsqlParameter messageParam = new NpgsqlParameter("p_message", NpgsqlDbType.Varchar, 500) { Direction = ParameterDirection.InputOutput, Value = string.Empty };
-
-                        command.Parameters.Add(successParam);
-                        command.Parameters.Add(messageParam);
-
-                        // Execute the stored procedure
-                        await command.ExecuteNonQueryAsync();
-
-                        // Retrieve output parameter values
-                        bool success = (bool)successParam.Value;
-                        string message = messageParam.Value.ToString();
-
-                        return new JsonResult(new { success, message });
-                    }
-                }
+            (bool success, string message) = await ExecuteStoredProcedureAsync(DatabaseObject.SpSaveUser, inputParameters, outputParameters);
+            return new JsonResult(new { success, message });
         }
         catch (Exception ex)
         {
@@ -97,25 +70,42 @@ public class UserRepository : IUserRepository
             // {
             //     return new NotFoundObjectResult("User not found");
             // }
+            // using (NpgsqlConnection? connection = _testDbContext.Database.GetDbConnection() as NpgsqlConnection)
+            // {
+            //     await connection.OpenAsync();
+            //     using (NpgsqlCommand command = new NpgsqlCommand("CALL sp_delete_user(@p_id, @p_success, @p_message)", connection))
+            //     {
+            //         command.CommandType = CommandType.Text;
 
-            NpgsqlParameter[] parameters = new[]
-            {
-                new NpgsqlParameter("p_id", NpgsqlDbType.Integer) { Value = id },
-                new NpgsqlParameter("p_success", NpgsqlDbType.Boolean) { Direction = ParameterDirection.InputOutput ,Value = false },
-                new NpgsqlParameter("p_message", NpgsqlDbType.Varchar) { Direction = ParameterDirection.InputOutput , Value= string.Empty }
-            };
+            //         // Add input parameter
+            //         Dictionary<string, object>? deleteParameters = GenerateStoredProcedureParameterForSingleInput(id);
+            //         foreach (var param in deleteParameters)
+            //         {
+            //             command.Parameters.AddWithValue(param.Key, param.Value);
+            //         }
+            //         // Output parameters
+            //         NpgsqlParameter[] successMessageParams = GetSuccessMessageParameters();
+            //         command.Parameters.Add(successMessageParams[0]);
+            //         command.Parameters.Add(successMessageParams[1]);
 
-            await _testDbContext.Database
-                .ExecuteSqlRawAsync("CALL sp_delete_user(@p_id, @p_success, @p_message)", parameters);
+            //         // Execute the stored procedure
+            //         await command.ExecuteNonQueryAsync();
 
-            bool success = (bool)parameters[1].Value;
-            string message = parameters[2].Value.ToString();
+            //         // Retrieve output parameter values
+            //         bool success = (bool)successMessageParams[0].Value;
+            //         string message = successMessageParams[1].Value.ToString();
 
-            if (success)
-            {
-                return new JsonResult(new { success = true, message = message });
-            }
-            return new NotFoundObjectResult(message);
+            //         return new JsonResult(new { success, message });
+            //     }
+            // }
+
+            var inputParameters = GenerateStoredProcedureParameterForSingleInput(id);
+
+            var outputParameters = GetSuccessMessageParameters();
+
+            var (success, message) = await ExecuteStoredProcedureAsync(DatabaseObject.SpDeleteUser, inputParameters, outputParameters);
+
+            return new JsonResult(new { success, message });
         }
         catch (Exception ex)
         {
@@ -139,12 +129,16 @@ public class UserRepository : IUserRepository
             //      Nickname = user.NickName
             //  }).ToListAsync();
 
-              List<UserViewModel> result = await _testDbContext.Database.SqlQueryRaw<UserViewModel>
-                (
-                    "SELECT id, name, code, email, phone, address, nick_name as nickname FROM fn_get_all_users()"
-                ).ToListAsync();
+            // List<UserViewModel> result = await _testDbContext.Database.SqlQueryRaw<UserViewModel>
+            //   (
+            //       "SELECT id, name, code, email, phone, address, nick_name as nickname FROM fn_get_all_users()"
+            //   ).ToListAsync();
 
-                return result ?? new List<UserViewModel>();
+            // return result ?? new List<UserViewModel>();
+            // passs id, name, code, email, phone, address, nick_name as nickname in ExecuteFunctionAsync method
+            var outputParameters = GetOutputParameterForFunctions(new UserViewModel());
+            return await ExecuteFunctionAsync<List<UserViewModel>>(DatabaseObject.FnGetAllUsers, new Dictionary<string, object?>(),outputParameters)
+                   ?? new List<UserViewModel>();
         }
         catch (Exception ex)
         {
@@ -158,10 +152,17 @@ public class UserRepository : IUserRepository
             // return await (from u in _testDbContext.Users
             //  where u.Id == id
             //  select u).FirstOrDefaultAsync() ?? throw new Exception("User not found");
-            string query = "SELECT \"Id\", \"Name\", \"Code\", \"Email\", \"Phone\", \"Address\", \"NickName\",\"IsDeleted\" FROM get_user_by_id(@p_id)";
-            return await _testDbContext.Database
-                .SqlQueryRaw<User>(query, new NpgsqlParameter("p_id", id))
-                .FirstOrDefaultAsync() ?? new User();
+            // string query = "SELECT \"Id\", \"Name\", \"Code\", \"Email\", \"Phone\", \"Address\", \"NickName\",\"IsDeleted\" FROM get_user_by_id(@p_id)";
+            // return await _testDbContext.Database
+            //     .SqlQueryRaw<User>(query, new NpgsqlParameter("p_id", id))
+            //     .FirstOrDefaultAsync() ?? new User();
+
+            var parameters = new Dictionary<string, object?>
+            {
+                { "p_id", id }
+            };
+
+            return await ExecuteFunctionAsync<User>(DatabaseObject.FnGetUserById, parameters,null) ?? throw new Exception("User not found");
         }
         catch (Exception ex)
         {
@@ -187,19 +188,130 @@ public class UserRepository : IUserRepository
 
             //    return customerEntity; 
 
-            string query = "SELECT \"Id\", \"Name\", \"Code\", \"Email\", \"Phone\", \"Address\", \"Nickname\" FROM fn_get_user_by_id(@p_id)";
-            
-            UserViewModel user = await _testDbContext.Database
-                .SqlQueryRaw<UserViewModel>(query, new NpgsqlParameter("p_id", id))
-                .FirstOrDefaultAsync() ?? new UserViewModel();
+            var parameters = new Dictionary<string, object?>
+            {
+                { "p_id", id }
+            };
 
-            return user;
-                          
+            return await ExecuteFunctionAsync<UserViewModel>(DatabaseObject.FnGetUserById, parameters,null) ?? new UserViewModel();
+
         }
         catch (Exception ex)
         {
             throw new Exception($"An error occurred while retrieving the user details by ID: {ex.Message}");
         }
+    }
+
+    private Dictionary<string, object?> GenerateStoredProcedureParametersFromObject(object obj)
+    {
+        Dictionary<string, object?> parameters = new Dictionary<string, object?>();
+
+        foreach (PropertyInfo property in obj.GetType().GetProperties())
+        {
+            string propertyName = $"p_{property.Name}";
+            object? propertyValue = property.GetValue(obj) ?? DBNull.Value;
+            parameters.Add(propertyName, propertyValue);
+        }
+
+        return parameters;
+    }
+    private Dictionary<string, object?> GenerateStoredProcedureParameterForSingleInput(int id)
+    {
+        return new Dictionary<string, object?>
+        {
+            { "p_id", id }
+        };
+    }
+    private NpgsqlParameter[] GetSuccessMessageParameters()
+    {
+        return new NpgsqlParameter[]
+        {
+            new NpgsqlParameter("p_success", NpgsqlDbType.Boolean) { Direction = ParameterDirection.InputOutput, Value = true },
+            new NpgsqlParameter("p_message", NpgsqlDbType.Varchar, 500) { Direction = ParameterDirection.InputOutput, Value = string.Empty }
+        };
+    }
+
+    private async Task<(bool success, string message)> ExecuteStoredProcedureAsync(string storedProcedureName, Dictionary<string, object?> inputParameters, NpgsqlParameter[] outputParameters)
+    {
+        using (NpgsqlConnection? connection = _testDbContext.Database.GetDbConnection() as NpgsqlConnection)
+        {
+            if (connection == null) throw new Exception("Database connection is not available.");
+
+            await connection.OpenAsync();
+
+            using (NpgsqlCommand command = new NpgsqlCommand($"CALL {storedProcedureName}({string.Join(", ", inputParameters.Keys.Select(key => $"@{key}"))}, {string.Join(", ", outputParameters.Select(param => $"@{param.ParameterName}"))})", connection))
+            {
+                command.CommandType = CommandType.Text;
+
+                // Add input parameters dynamically
+                foreach (var param in inputParameters)
+                {
+                    command.Parameters.AddWithValue(param.Key, param.Value ?? DBNull.Value);
+                }
+
+                // Add output parameters
+                foreach (var outputParam in outputParameters)
+                {
+                    command.Parameters.Add(outputParam);
+                }
+
+
+                await command.ExecuteNonQueryAsync();
+
+                // Retrieve output parameter values
+                bool success = outputParameters[0].Value == null;
+                string message = outputParameters[1].Value?.ToString() ?? string.Empty;
+
+                return (success, message);
+            }
+        }
+    }
+    private async Task<T?> ExecuteFunctionAsync<T>(string functionName, Dictionary<string, object?> parameters, Dictionary<string,object?>? outputprameter) where T : class
+    {
+        try
+        {
+            // Build the SQL query dynamically
+            string parameterPlaceholders = string.Join(", ", parameters.Keys.Select(key => $"@{key}"));
+            string query = parameters.Count > 0
+            ? $"SELECT {string.Join(", ", outputprameter.Keys)} FROM {functionName}({parameterPlaceholders})"
+            : $"SELECT {string.Join(", ", outputprameter.Keys)} FROM {functionName}()";
+
+            // Create NpgsqlParameter array from the dictionary
+            NpgsqlParameter[]? npgsqlParameters = parameters.Select(param => new NpgsqlParameter(param.Key, param.Value ?? DBNull.Value)).ToArray();
+
+            // Execute the query and map the result
+            if (npgsqlParameters.Count() > 0)
+            {
+                return await _testDbContext.Database
+                .SqlQueryRaw<T>(query, npgsqlParameters)
+                .FirstOrDefaultAsync();
+            }
+            else
+            {
+                return await _testDbContext.Database
+                .SqlQueryRaw<T>(query)
+                .FirstOrDefaultAsync();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"An error occurred while executing the function '{functionName}': {ex.Message}");
+        }
+    }
+
+    private Dictionary<string, object?> GetOutputParameterForFunctions(object obj)
+    {
+        Dictionary<string, object?> parameters = new Dictionary<string, object?>();
+
+        foreach (PropertyInfo property in obj.GetType().GetProperties())
+        {
+            string propertyName = $"{char.ToLower(property.Name[0])}{property.Name.Substring(1)}";
+            object? propertyValue = property.GetValue(obj) ?? DBNull.Value;
+            parameters.Add(propertyName, propertyValue);
+        }
+
+        return parameters;
     }
 
 }

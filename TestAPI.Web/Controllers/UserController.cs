@@ -7,7 +7,7 @@ namespace TestAPI.Web.Controllers;
 
 [ApiController]
 [Route("api/users")]
-[Authorize(Roles = "admin")]
+[Authorize(Roles = "Customer")]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;

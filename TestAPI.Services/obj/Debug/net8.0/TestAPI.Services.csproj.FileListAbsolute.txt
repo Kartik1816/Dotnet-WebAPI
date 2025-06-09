@@ -15,3 +15,4 @@ C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\re
 C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.pdb
 C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.genruntimeconfig.cache
 C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\ref\TestAPI.Services.dll
+C:\Users\pca158\Desktop\Customer-Management\TestAPI.Services\obj\Debug\net8.0\TestAPI.Services.sourcelink.json

@@ -29,7 +29,8 @@ public class UserService : IUserService
                 Email = userViewModel.Email,
                 Phone = userViewModel.Phone,
                 Address = userViewModel.Address,
-                NickName = userViewModel.Nickname
+                NickName = userViewModel.Nickname,
+                IsDeleted= false // Default value for new users
             };
             userToSave = customer;
         }
@@ -46,6 +47,7 @@ public class UserService : IUserService
             user.Phone = userViewModel.Phone;
             user.Address = userViewModel.Address;
             user.NickName = userViewModel.Nickname;
+            user.IsDeleted = false; // Ensure IsDeleted is set to false for updates
             userToSave = user;
             userToSave.Id = userViewModel.Id; // Ensure the ID is set for updates
         }

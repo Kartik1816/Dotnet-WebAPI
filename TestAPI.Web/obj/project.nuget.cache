@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4MJ1paFTGoc=",
+  "dgSpecHash": "QMv1YSazvis=",
   "success": true,
-  "projectFilePath": "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.web\\TestAPI.Web.csproj",
+  "projectFilePath": "C:\\Users\\pca158\\Desktop\\Customer-Management\\TestAPI.Web\\TestAPI.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pca158\\.nuget\\packages\\dapper\\2.1.66\\dapper.2.1.66.nupkg.sha512",
     "C:\\Users\\pca158\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
